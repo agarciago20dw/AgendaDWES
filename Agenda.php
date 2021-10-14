@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda</title>
+    <title>AGENDA</title>
 </head>
 <body>
     
@@ -13,18 +13,27 @@
         <form method="post">
             <table style="text-align: center;">
                 <tr>
-                    <td colspan="2"><h1>INTRODUCIR ENTRADA</h1></td>
+                    <td colspan="2"><h1>AGENDA DE <?php
+                        $persona = "";
+                        if (isset($_POST['persona'])) {
+                            $persona = mb_strtoupper($_POST['persona'], 'UTF-8');
+                        }
+                        echo $persona;
+                    ?></h1></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><p>AÑADIR ENTRADA:</p></td>
                 </tr>
                 <tr>
                     <td><label>Introduce el nombre</label></td>
-                    <td><input type="text" name="nombre"></td>
+                    <td><input type="text" name="nombre" value="<?php if (isset($_POST['nombre'])) { echo $_POST['nombre']; } ?>"></td>
                 </tr>
                 <tr>
                     <td><label>Introduce el correo electrónico</label></td>
-                    <td><input type="text" name="correo"></td>
+                    <td><input type="text" name="correo" value="<?php if (isset($_POST['correo'])) { echo $_POST['correo']; } ?>"></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="submit" value="ENVIAR" style="margin-top: 10px;"></td>
+                    <td colspan="2"><input type="submit" value="AÑADIR" style="margin-top: 10px;"></td>
                 </tr>
 
                 <!-- CLASE AGENDA -->
@@ -35,7 +44,7 @@
 
                         // FUNCIÓN QUE AÑADE UNA ENTRADA A LA AGENDA - RECIBE UN NOMBRE Y UN CORREO POR PARÁMETROS
                         public function anadirEntrada($nombre, $correo) {
-                            // echo "<br>NOMBRE: " . $nombre . " | Correo: " . $correo . "<br>";
+                            $nombre = $this->formatearNombre($nombre);
                             if ($this->nombreVacio($nombre)) {
                                 echo "<br>EL NOMBRE ESTÁ VACÍO";
                             }
@@ -51,6 +60,17 @@
                             else {
                                 echo "<br>EL CORREO NO ES VÁLIDO";
                             }
+                        }
+
+                        private function formatearNombre($nombre) {
+                            $nombre = str_replace(array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'), array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'), $nombre);
+                            $nombre = str_replace(array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'), array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'), $nombre);
+                            $nombre = str_replace(array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'), array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'), $nombre);
+                            $nombre = str_replace(array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'), array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'), $nombre);
+                            $nombre = str_replace(array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'), array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'), $nombre );
+
+                            $nombre_formateado = strtolower($nombre);
+                            return $nombre_formateado;
                         }
 
                         private function nombreVacio($nombre) {
@@ -120,10 +140,10 @@
 
                     // SI SE HAN ENVIADO LOS INPUT 'nombre' Y 'correo' ACTUALIZAMOS LOS ARRAYS DE NOMBRES Y CORREOS Y AÑADIMOS LA ENTRADA
                     if (isset($_POST['nombre']) && isset($_POST['correo'])) {
-                        $nombre = $_POST['nombre'];
-                        $correo = $_POST['correo'];
-                        array_push($nombres, $nombre);
-                        array_push($correos, $correo);
+                        // ELIMINAMOS POSIBLES ETIQUETAS HTML
+                        $nombre = strip_tags($_POST['nombre']);
+                        $correo = strip_tags($_POST['correo']);
+
                         $agenda->anadirEntrada($nombre, $correo);
 
                         // ACTUALIZAMOS LOS NOMBRES Y LOS CORREOS
@@ -143,6 +163,7 @@
                     <td>
                         <input type="hidden" name="nombres" value="<?php if (!empty($nombres)) { echo implode(",", $nombres); } ?>">
                         <input type="hidden" name="correos" value="<?php if (!empty($correos)) { echo implode(",", $correos); } ?>">
+                        <input type="hidden" name="persona" value="<?php echo $persona ?>">
                     </td>
                 </tr>
             </table> 
