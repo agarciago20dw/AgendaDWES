@@ -13,13 +13,7 @@
         <form method="post">
             <table style="text-align: center;">
                 <tr>
-                    <td colspan="2"><h1>AGENDA DE <?php
-                        $persona = "";
-                        if (isset($_POST['persona'])) {
-                            $persona = mb_strtoupper($_POST['persona'], 'UTF-8');
-                        }
-                        echo $persona;
-                    ?></h1></td>
+                    <td colspan="2"><h1>AGENDA DE <?php $persona = mb_strtoupper($_POST['persona'], 'UTF-8'); echo $persona; ?></h1></td>
                 </tr>
                 <tr>
                     <td colspan="2"><p>AÑADIR ENTRADA:</p></td>

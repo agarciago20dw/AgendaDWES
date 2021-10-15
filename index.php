@@ -7,19 +7,21 @@
     <title>AGENDA</title>
 </head>
 <body>
-    <form action="Agenda.php" method="post">
-        <table style="text-align: center;">
-            <tr>
-                <td colspan="2"><h1>NOMBRE PARA LA AGENDA</h1></td>
-            </tr>
-            <tr>
-                <td><label>Introduce tu nombre</label></td>
-                <td><input type="text" name="persona"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="ENVIAR" style="margin-top: 10px;"></td>
-            </tr>
-        </table>
-    </form>
+    <center>
+        <form action="Agenda.php" method="post">
+            <table style="text-align: center;">
+                <tr>
+                    <td colspan="2"><h1>NOMBRE PARA LA AGENDA</h1></td>
+                </tr>
+                <tr>
+                    <td><label>Introduce tu nombre</label></td>
+                    <td><input type="text" name="persona"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="ENVIAR" style="margin-top: 10px;"></td>
+                </tr>
+            </table>
+        </form>
+    </center>
 </body>
 </html>
