@@ -13,7 +13,10 @@
         <form method="post">
             <table style="text-align: center;">
                 <tr>
-                    <td colspan="2"><h1>AGENDA DE <?php $persona = mb_strtoupper($_POST['persona'], 'UTF-8'); echo $persona; ?></h1></td>
+                    <?php 
+                        $persona = mb_strtoupper($_POST['persona'], 'UTF-8'); 
+                    ?>
+                    <td colspan="2"><h1>AGENDA DE <?php echo $persona; ?></h1></td>
                 </tr>
                 <tr>
                     <td colspan="2"><p>AÑADIR ENTRADA:</p></td>
@@ -108,8 +111,12 @@
                             echo $cod_html;
                         }
 
-                        public function getEntradas() {
-                            return $this->entradas;
+                        public function getNombres() {
+                            return array_keys($this->entradas);
+                        }
+
+                        public function getCorreos() {
+                            return array_values($this->entradas);
                         }
                     }
                 ?>
@@ -122,13 +129,16 @@
 
                     // SI LOS INPUT HIDDEN HAN ENVIADO LOS ARRAYS FORMATEADOS LOS DESFORMATEAMOS Y LOS REASIGNAMOS, DESPUÉS AÑADIMOS LAS ENTRADAS A LA AGENDA
                     if (isset($_POST['nombres']) && isset($_POST['correos'])) {
+                        // print_r($_POST);
                         $nombres = explode(",", $_POST['nombres']);
                         $correos = explode(",", $_POST['correos']);
 
+                        // print_r($nombres);
+                        // echo "<br>";
+                        // print_r($correos);
+
                         for ($i = 0; $i < count($nombres); $i++) {
-                            if ($i != 0) {
-                                $agenda->anadirEntrada($nombres[$i], $correos[$i]);
-                            }
+                            $agenda->anadirEntrada($nombres[$i], $correos[$i]);
                         }
                     }
 
@@ -141,22 +151,18 @@
                         $agenda->anadirEntrada($nombre, $correo);
 
                         // ACTUALIZAMOS LOS NOMBRES Y LOS CORREOS
-                        $entradas = $agenda->getEntradas();
-                        foreach ($entradas as $nombre => $correo) {
-                            array_push($nombres, $nombre);
-                            array_push($correos, $correo);
-                        }
+                        $nombres = $agenda->getNombres();
+                        $correos = $agenda->getCorreos();
                     }
 
                     // MOSTRAMOS LAS ENTRADAS
                     $agenda->mostrarEntradas();
-    
                 ?>
 
                 <tr>
                     <td>
-                        <input type="hidden" name="nombres" value="<?php if (!empty($nombres)) { echo implode(",", $nombres); } ?>">
-                        <input type="hidden" name="correos" value="<?php if (!empty($correos)) { echo implode(",", $correos); } ?>">
+                        <input type="hidden" name="nombres" value="<?php echo implode(",", $nombres) ?>">
+                        <input type="hidden" name="correos" value="<?php echo implode(",", $correos) ?>">
                         <input type="hidden" name="persona" value="<?php echo $persona ?>">
                     </td>
                 </tr>
