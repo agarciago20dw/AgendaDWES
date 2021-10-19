@@ -94,8 +94,6 @@
     if (isset($_COOKIE['nombres']) && isset($_COOKIE['correos'])) {
         $nombres = explode(",", $_COOKIE['nombres']);
         $correos = explode(",", $_COOKIE['correos']);
-        setCookie('nombres', "", time() - 100);
-        setCookie('correos', "", time() - 100);
 
         for ($i = 0; $i < count($nombres); $i++) {
             $agenda->anadirEntrada($nombres[$i], $correos[$i]);
@@ -169,6 +167,5 @@
             </table> 
         </form>
     </center>
-
 </body>
 </html>
