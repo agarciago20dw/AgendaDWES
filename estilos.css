@@ -10,6 +10,7 @@ body {
     width: 100%;
 }
 
+/* CONTENEDOR PRINCIPAL */
 .contenedor {
     width: 60%;
     margin: 0 auto;
@@ -19,6 +20,7 @@ body {
     border-radius: 10px;
 }
 
+/* CABECERA */
 .cabecera {
     width: 100%;
     display: flex;
@@ -36,6 +38,7 @@ body {
     margin-right: 20px;
 }
 
+/* SECCIÓN (FORMULARIO) */
 .seccion {
     width: 100%;
     display: flex;
@@ -90,6 +93,7 @@ body {
     transform: scale(.95);
 }
 
+/* ARTÍCULO (TABLA DE LA AGENDA) */
 .articulo {
     width: 100%;
     min-height: 200px;
@@ -130,6 +134,7 @@ td {
     text-align: center;
 }
 
+/* PIE */
 .pie {
     width: 100%;
     text-align: center;
