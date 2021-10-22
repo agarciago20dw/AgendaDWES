@@ -9,22 +9,22 @@
         public function anadirEntrada($nombre, $correo) {
             $nombre = $this->formatearNombre($nombre);
             if ($this->nombreVacio($nombre)) {
-                $mensaje = "EL NOMBRE ESTÁ VACÍO";
+                $this->mensaje = "EL NOMBRE ESTÁ VACÍO";
             }
             else if (!$this->existeEntrada($nombre) && $this->correoValido($correo)) {
                 $this->entradas[$nombre] = $correo;
-                $mensaje = "REGISTRO INSERTADO CORRECTAMENTE";
+                $this->mensaje = "REGISTRO INSERTADO CORRECTAMENTE";
             }
             else if ($this->existeEntrada($nombre) && $this->correoValido($correo)) {
                 $this->entradas[$nombre] = $correo;
-                $mensaje = "REGISTRO ACTUALIZADO CORRECTAMENTE";
+                $this->mensaje = "REGISTRO ACTUALIZADO CORRECTAMENTE";
             }
             else if ($this->existeEntrada($nombre) && $this->correoVacio($correo)) {
                 unset($this->entradas[$nombre]);
-                $mensaje = "REGISTRO ELIMINADO CORRECTAMENTE";
+                $this->mensaje = "REGISTRO ELIMINADO CORRECTAMENTE";
             }
             else {
-                $mensaje = "EL CORREO NO ES VÁLIDO";
+                $this->mensaje = "EL CORREO NO ES VÁLIDO";
             }
         }
 
@@ -136,6 +136,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Oswald:wght@200&family=Poppins:wght@200&display=swap" rel="stylesheet">
     <title>AGENDA</title>
 </head>
 <body>
@@ -144,7 +146,7 @@
             $persona = mb_strtoupper($_POST['persona'], 'UTF-8'); 
         ?>
         <header class="cabecera">
-            <i class="fas fa-clipboard-list"></i>
+            <i class="far fa-address-book"></i>
             <h1>AGENDA DE <?php echo $persona; ?></h1>
         </header>
         
@@ -161,17 +163,20 @@
                 <input type="hidden" name="persona" value="<?php echo $persona ?>">
             </form>
         </section>
-
         <article class="articulo">
             <?php
                 // MOSTRAMOS LAS ENTRADAS
-                $agenda->mostrarEntradas();
-                $agenda->mostrarMensaje();
+                if (isset($_POST['nombre']) && isset($_POST['correo'])) {
+                    $agenda->mostrarEntradas();
+                    ?>
+                    <p class="mensaje">¡<?php $agenda->mostrarMensaje(); ?>!</p>
+                    <?php
+                }
             ?>
         </article>
 
         <footer class="pie">
-            <p>Adrián García González - DW32 Zubiri Manteo</p>
+            <p>Adrián García González © DW32 Zubiri Manteo</p>
         </footer>
     </div>
 </body>
