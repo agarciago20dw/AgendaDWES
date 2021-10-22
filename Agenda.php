@@ -1,11 +1,11 @@
 <!-- CLASE AGENDA -->
 <?php
     class Agenda {
-        // ATRIBUTO DE LA CLASE, ARRAY ASOCIATIVO (CLAVE: NOMBRE, VALOR: CORREO) DÓNDE GUARDAREMOS LAS ENTRADAS DE LA AGENDA
+        // ATRIBUTO DE LA CLASE, ARRAY ASOCIATIVO (CLAVE: NOMBRE, VALOR: CORREO) DÓNDE GUARDAREMOS LAS ENTRADAS DE LA AGENDA Y UN MENSAJE QUE IMPRIMIREMOS CUANDO SE REALICE ALGUNA ACCIÓN
         private $entradas = [];
         private $mensaje;
 
-        // FUNCIÓN QUE AÑADE UNA ENTRADA A LA AGENDA - RECIBE UN NOMBRE Y UN CORREO POR PARÁMETROS
+        // FUNCIÓN QUE AÑADE (O NO) UNA ENTRADA A LA AGENDA - RECIBE UN NOMBRE Y UN CORREO POR PARÁMETROS
         public function anadirEntrada($nombre, $correo) {
             $nombre = $this->formatearNombre($nombre);
             if ($this->nombreVacio($nombre)) {
@@ -28,6 +28,7 @@
             }
         }
 
+        // FUNCIÓN PRIVADA QUE FORMATEA EL NOMRE - SUSTITUYE LAS TILDES
         private function formatearNombre($nombre) {
             $nombre = str_replace(array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'), array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'), $nombre);
             $nombre = str_replace(array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'), array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'), $nombre);
@@ -39,6 +40,7 @@
             return $nombre_formateado;
         }
 
+        // FUNCIÓN PRIVADA QUE DEVUELVE SI UN NOMBRE ESTÁ VACÍO O NO
         private function nombreVacio($nombre) {
             if ($nombre == "") {
                 return true;
@@ -54,6 +56,7 @@
             return false;
         }
 
+        // FUNCIÓN PRIVADA QUE COMPRUEBA SI UN CORREO ES VÁLIDO (USANDO UN FILTRO PREDEFINIDO)
         private function correoValido($correo) {
             if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
                 return true;
@@ -61,6 +64,7 @@
             return false;
         }
 
+        // FUNCIÓN PRIVADA QUE DEVUELVE SI UN CORREO ESTÁ VACÍO
         private function correoVacio($correo) {
             if ($correo == "") {
                 return true;
@@ -68,6 +72,7 @@
             return false;
         }
 
+        // FUNCIÓN QUE MUESTRA, EN UNA TABLA, LOS REGISTROS DEL ARRAY ASOCIATIVO DE LA AGENDA
         public function mostrarEntradas() {
             $cod_html = "<table>";
             $cod_html .= "<tr><td class='titulos'>NOMBRE</td><td class='titulos'>CORREO</td></tr>";
@@ -80,14 +85,17 @@
             echo $cod_html;
         }
 
+        // FUNCIÓN QUE MUESTRA UN MENSAJE INFORMANDO DE LAS ACCIONES REALIZADAS
         public function mostrarMensaje() {
             echo $this->mensaje;
         }
 
+        // FUNCIÓN QUE DEVUELVE UN ARRAY CON LAS CLAVES DEL ARRAY ASOCIATIVO DE LA AGENDA
         public function getNombres() {
             return array_keys($this->entradas);
         }
 
+        // FUNCIÓN QUE DEVUELVE UN ARRAY CON LOS VALORES DEL ARRAY ASOCIATIVO DE LA AGENDA
         public function getCorreos() {
             return array_values($this->entradas);
         }
@@ -114,11 +122,11 @@
         }
     }
 
-    // SI SE HAN ENVIADO LOS INPUT 'nombre' Y 'correo' ACTUALIZAMOS LOS ARRAYS DE NOMBRES Y CORREOS Y AÑADIMOS LA ENTRADA
+    // SI SE HAN ENVIADO LOS INPUT 'nombre' Y 'correo' AÑADIMOS LA ENTRADA Y ACTUALIZAMOS LOS ARRAYS DE NOMBRES Y CORREOS
     if (isset($_POST['nombre']) && isset($_POST['correo'])) {
         // ELIMINAMOS POSIBLES ETIQUETAS HTML
-        $nombre = strip_tags($_POST['nombre']);
-        $correo = strip_tags($_POST['correo']);
+        $nombre = strip_tags($_POST['nombre']); // FUNCIÓN PREDEFINIDA DE PHP QUE ELIMINA POSIBLES ETIQUETAS HTML Y PHP
+        $correo = strip_tags($_POST['correo']); // FUNCIÓN PREDEFINIDA DE PHP QUE ELIMINA POSIBLES ETIQUETAS HTML Y PHP
 
         $agenda->anadirEntrada($nombre, $correo);
 
@@ -138,7 +146,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Oswald:wght@200&family=Poppins:wght@200&display=swap" rel="stylesheet">
-    <title>AGENDA</title>
+    <title>AGENDA (INPUTS HIDDEN)</title>
 </head>
 <body>
     <div class="contenedor">
